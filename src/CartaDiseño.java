@@ -12,6 +12,10 @@ public class CartaDiseño {
         return color;
     }
 
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     public String getTipo() {
         return tipo;
     }
