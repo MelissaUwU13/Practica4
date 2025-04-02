@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class UnoGame {
+public class UnoGame{
 
     private List<CartaDiseño> baraja = new ArrayList<>();
     private List<CartaDiseño> cartasUsadas = new ArrayList<>();
@@ -56,17 +56,23 @@ public class UnoGame {
                 System.out.println("No tienes cartas válidas para jugar, TOMA UNA CARTA!");
             }
             else{
-                //Solicitar al jugador que elija una carta para jugar
-                System.out.print("Elige una carta válida por su número de opción: ");
-                int opcion = scanner.nextInt();
-                scanner.nextLine(); //Limpiar el buffer
-
-                //Verificar si la opción es válida
-                while (opcion<0 || opcion>=manoActual.size() || !cartasValidas.contains(manoActual.get(opcion))){
-                    System.out.println("Carta no válida para jugar o opción incorrecta. Por favor elige una carta válida.");
+                // Solicitar al jugador que elija una carta válida para jugar
+                int opcion = -1;
+                boolean cartaValida = false;
+                while (!cartaValida){
+                    System.out.print("Elige una carta válida por su número de opción: ");
                     opcion = scanner.nextInt();
                     scanner.nextLine(); // Limpiar el buffer
+
+                    // Verificar si la opción es válida
+                    if(opcion >= 0 && opcion < manoActual.size() && cartasValidas.contains(manoActual.get(opcion))){
+                        cartaValida = true;
+                    }
+                    else{
+                        System.out.println("Carta no válida para jugar, porfis elige una carta otra qwq");
+                    }
                 }
+
 
                 // Seleccionar la carta elegida
                 CartaDiseño cartaSeleccionada = manoActual.get(opcion);
@@ -118,17 +124,6 @@ public class UnoGame {
         return cartasValidas;
     }
 
-    //Analizamos si la carta que pone el jugador y verificamos si son del mismo color o valor a la ya puesta en la mesa
-    //o si se trata de una carta especial +4 o cambio de color
-    public boolean comprobarJuego(List<CartaDiseño> mano){
-        CartaDiseño cartaMesa = cartasUsadas.get(cartasUsadas.size() - 1);
-        return mano.stream()
-                .anyMatch(c -> c.getColor().equals(cartaMesa.getColor())
-                        || c.getValor() == cartaMesa.getValor()
-                        || c.getColor().equals("NEGRO"));
-    }
-
-
     private void cartasEspeciales(List<CartaDiseño> mano){
         CartaDiseño carta = cartasUsadas.get(cartasUsadas.size() - 1);
 
@@ -164,10 +159,19 @@ public class UnoGame {
     private void comerCartas(int numCartas) {
         //Analiza a que jugador se le agregaran las cartas, si jugador 1 o 2
         List<CartaDiseño> siguienteJugador = turnoJugador1 ? jugador2 : jugador1;
-        for(int i=0;i<numCartas;i++){
-            //
-            if (!baraja.isEmpty()) {
-                siguienteJugador.add(baraja.remove(0));
+
+        if(siguienteJugador==jugador1){
+            for(int i=0;i< numCartas;i++){
+                if(!baraja.isEmpty()){
+                    jugador1.add(baraja.remove(0));
+                }
+            }
+        }
+        else{
+            for(int i=0;i< numCartas;i++){
+                if(!baraja.isEmpty()){
+                    jugador1.add(baraja.remove(0));
+                }
             }
         }
     }
