@@ -1,23 +1,27 @@
 public class CartaDiseño {
-    enum Color { AZUL, VERDE, ROSA, AMARILLO, NEGRO } // NEGRO para cartas especiales
+    private String tipo, color;
+    private int valor;
 
-    private String valor, color;
-
-    public CartaDiseño(String color, String valor) {
+    public CartaDiseño(String color, String tipo, int valor) {
         this.color = color;
         this.valor = valor;
+        this.tipo = tipo;
     }
 
     public String getColor() {
         return color;
     }
 
-    public String getValor() {
+    public String getTipo() {
+        return tipo;
+    }
+
+    public int getValor() {
         return valor;
     }
 
     public String toString() {
-        return color + " " + valor;
+        return tipo.equals("NUMERO") ? color + " " + valor : color + " " + tipo;
     }
 
 }
