@@ -13,7 +13,7 @@ public class UnoGame {
     private boolean juego = true;
     private Scanner scanner = new Scanner(System.in);
 
-    public UnoGame() {
+    public UnoGame(){
         Baraja mazo = new Baraja();
         //Cada jugador toma 7 cartas, que a la vez mandan a llamar un metodo que las elimina de la baraja
         jugador1.addAll(Arrays.asList(mazo.tomar(), mazo.tomar(), mazo.tomar(), mazo.tomar(), mazo.tomar(), mazo.tomar(), mazo.tomar()));
@@ -23,13 +23,20 @@ public class UnoGame {
         cartasUsadas.add(mazo.tomar());
     }
 
-    public void mostrarCarta() {
+    public void mostrarCarta(){
         //Mostramos la ultima carta puesta de la baraja
         System.out.println("Carta en mesa: " + cartasUsadas.get(cartasUsadas.size() - 1));
     }
 
+    public void mostrarMano(List<CartaDiseño> mano){
+        System.out.println("Cartas en tu mano:");
+        for(int i=0;i<mano.size(); i++){
+            System.out.println(i + ": " + mano.get(i));
+        }
+    }
+
     public void jugar(){
-        while (juego = true){
+        while (juego == true){
             mostrarCarta();
             //Aqui analizamos de manera breve un if, si jugador1 es true entonces el turno sera del jugador 1, si es false, sera del jugador 2
             List<CartaDiseño> manoActual = turnoJugador1 ? jugador1 : jugador2;
@@ -37,10 +44,38 @@ public class UnoGame {
             //Misma comprobacion de antes pero ahora para mostrar el mensaje
             System.out.println("Turno del " + (turnoJugador1 ? "Jugador 1" : "Jugador 2"));
 
-            //Verficamos que el jugador puede jugar o si necesita tomar carta y verificamos si hay cartas especiales
-            if(!comprobarJuego(manoActual)){
+            // Mostrar las cartas en la mano del jugador
+            mostrarMano(manoActual);
+
+            //Comprobar las cartas válidas para jugar
+            List<CartaDiseño> cartasValidas = comprobarCartasValidas(manoActual);
+
+            if(cartasValidas.isEmpty()){
+                //Si no hay cartas válidas, el jugador toma una carta
                 tomarCarta(manoActual);
-                cartasEspeciales(manoActual);
+                System.out.println("No tienes cartas válidas para jugar, TOMA UNA CARTA!");
+            }
+            else{
+                //Solicitar al jugador que elija una carta para jugar
+                System.out.print("Elige una carta válida por su número de opción: ");
+                int opcion = scanner.nextInt();
+                scanner.nextLine(); //Limpiar el buffer
+
+                //Verificar si la opción es válida
+                while (opcion<0 || opcion>=manoActual.size() || !cartasValidas.contains(manoActual.get(opcion))){
+                    System.out.println("Carta no válida para jugar o opción incorrecta. Por favor elige una carta válida.");
+                    opcion = scanner.nextInt();
+                    scanner.nextLine(); // Limpiar el buffer
+                }
+
+                // Seleccionar la carta elegida
+                CartaDiseño cartaSeleccionada = manoActual.get(opcion);
+
+                // Realizamos la comprobación y jugamos la carta
+                cartasUsadas.add(cartaSeleccionada);
+                manoActual.remove(opcion); //Eliminar la carta de la mano después de jugarla
+                System.out.println("Jugaste la carta " + cartaSeleccionada);
+                cartasEspeciales(manoActual); // Verificamos si la carta jugada es especial
             }
 
             //Si el jugador ya no tiene cartas, entonces gana
@@ -67,6 +102,20 @@ public class UnoGame {
         else{
             System.out.println("No hay más cartas en la baraja, PASE DE TURNO!!");
         }
+    }
+
+    //Función que comprueba cuáles cartas en la mano son válidas para jugar
+    public List<CartaDiseño> comprobarCartasValidas(List<CartaDiseño> mano) {
+        CartaDiseño cartaMesa = cartasUsadas.get(cartasUsadas.size() - 1);
+        List<CartaDiseño> cartasValidas = new ArrayList<>();
+
+        for (CartaDiseño carta : mano) {
+            if (carta.getColor().equals(cartaMesa.getColor()) || carta.getValor() == cartaMesa.getValor() || carta.getColor().equals("NEGRO")) {
+                cartasValidas.add(carta);
+            }
+        }
+
+        return cartasValidas;
     }
 
     //Analizamos si la carta que pone el jugador y verificamos si son del mismo color o valor a la ya puesta en la mesa
