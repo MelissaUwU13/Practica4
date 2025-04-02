@@ -15,12 +15,16 @@ public class UnoGame{
 
     public UnoGame(){
         Baraja mazo = new Baraja();
-        //Cada jugador toma 7 cartas, que a la vez mandan a llamar un metodo que las elimina de la baraja
-        jugador1.addAll(Arrays.asList(mazo.tomar(), mazo.tomar(), mazo.tomar(), mazo.tomar(), mazo.tomar(), mazo.tomar(), mazo.tomar()));
-        jugador2.addAll(Arrays.asList(mazo.tomar(), mazo.tomar(), mazo.tomar(), mazo.tomar(), mazo.tomar(), mazo.tomar(), mazo.tomar()));
+        baraja.addAll(mazo.getCartas()); // Copiar todas las cartas a baraja
 
-        //Se toma la primera carta del juego
-        cartasUsadas.add(mazo.tomar());
+        // Repartir 7 cartas a cada jugador, eliminándolas de la baraja
+        for (int i = 0; i < 7; i++) {
+            jugador1.add(tomarCartaDeBaraja());
+            jugador2.add(tomarCartaDeBaraja());
+        }
+
+        // Sacar la primera carta del juego
+        cartasUsadas.add(tomarCartaDeBaraja());
     }
 
     public void mostrarCarta(){
@@ -52,8 +56,9 @@ public class UnoGame{
 
             if(cartasValidas.isEmpty()){
                 //Si no hay cartas válidas, el jugador toma una carta
-                tomarCarta(manoActual);
                 System.out.println("No tienes cartas válidas para jugar, TOMA UNA CARTA!");
+
+                tomarCarta(manoActual);
             }
             else{
                 // Solicitar al jugador que elija una carta válida para jugar
@@ -92,7 +97,15 @@ public class UnoGame{
 
             //Cambiamos de turno de jugador
             turnoJugador1 = !turnoJugador1;
+            System.out.println(" ");
         }
+    }
+
+    private CartaDiseño tomarCartaDeBaraja() {
+        if(!baraja.isEmpty()){
+            return baraja.remove(0); //Sacamos la primera carta de la baraja y la eliminamos
+        }
+        return null; //En caso de que no haya cartas
     }
 
     //Tomar una carta de la baraja
@@ -101,7 +114,7 @@ public class UnoGame{
         if(!baraja.isEmpty()){
             //Agregamos una carta a la mano del usuario y la eliminamos de la baraja
             mano.add(baraja.remove(0));
-            System.out.println("No tienes cartas para jugar, asi que tomaste una carta! 0w0");
+            System.out.println("Carta tomada! 0w0");
         }
 
         //Si ya no hay cartas para agarrar se pasa el turno
@@ -115,8 +128,8 @@ public class UnoGame{
         CartaDiseño cartaMesa = cartasUsadas.get(cartasUsadas.size() - 1);
         List<CartaDiseño> cartasValidas = new ArrayList<>();
 
-        for (CartaDiseño carta : mano) {
-            if (carta.getColor().equals(cartaMesa.getColor()) || carta.getValor() == cartaMesa.getValor() || carta.getColor().equals("NEGRO")) {
+        for(CartaDiseño carta : mano){
+            if(carta.getColor().equals(cartaMesa.getColor()) || carta.getValor() == cartaMesa.getValor() || carta.getColor().equals("NEGRO")){
                 cartasValidas.add(carta);
             }
         }
@@ -156,22 +169,13 @@ public class UnoGame{
     }
 
     //Metodo para remover 2 o 4 cartas
-    private void comerCartas(int numCartas) {
-        //Analiza a que jugador se le agregaran las cartas, si jugador 1 o 2
+    private void comerCartas(int numCartas){
         List<CartaDiseño> siguienteJugador = turnoJugador1 ? jugador2 : jugador1;
 
-        if(siguienteJugador==jugador1){
-            for(int i=0;i< numCartas;i++){
-                if(!baraja.isEmpty()){
-                    jugador1.add(baraja.remove(0));
-                }
-            }
-        }
-        else{
-            for(int i=0;i< numCartas;i++){
-                if(!baraja.isEmpty()){
-                    jugador1.add(baraja.remove(0));
-                }
+        for(int i=0;i<numCartas;i++){
+            CartaDiseño cartaTomada = tomarCartaDeBaraja();
+            if(cartaTomada != null){
+                siguienteJugador.add(cartaTomada);
             }
         }
     }
