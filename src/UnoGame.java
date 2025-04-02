@@ -39,12 +39,12 @@ public class UnoGame {
             System.out.println("Turno del " + (turnoJugador1 ? "Jugador 1" : "Jugador 2"));
 
             //Verficamos que el jugador puede jugar o si necesita tomar carta
-            if (!comprobarJuego(manoActual)) {
+            if(!comprobarJuego(manoActual)){
                 tomarCarta(manoActual);
             }
 
             //Si el jugador ya no tiene cartas, entonces gana
-            if (manoActual.isEmpty()) {
+            if(manoActual.isEmpty()){
                 System.out.println("¡Ganó el " + (turnoJugador1 ? "Jugador 1" : "Jugador 2") + "!");
                 juego = false; //terminamos el while
             }
@@ -57,10 +57,26 @@ public class UnoGame {
 
 
     public void tomarCarta(List<CartaDiseño> mano){
+        //Revisamos que haya cartas en la baraja para tomar una
+        if(!baraja.isEmpty()){
+            //Agregamos una carta a la mano del usuario y la eliminamos de la baraja
+            mano.add(baraja.remove(0));
+            System.out.println("No tienes cartas para jugar, asi que tomaste una carta! 0w0");
+        }
 
+        //Si ya no hay cartas para agarrar se pasa el turno
+        else{
+            System.out.println("No hay más cartas en la baraja, PASE DE TURNO!!");
+        }
     }
 
+    //Analizamos si la carta que pone el jugador y verificamos si son del mismo color o valor a la ya puesta en la mesa
+    //o si se trata de una carta especial +4 o cambio de color
     public boolean comprobarJuego(List<CartaDiseño> mano){
-        return false;
+        CartaDiseño cartaMesa = cartasUsadas.get(cartasUsadas.size() - 1);
+        return mano.stream()
+                .anyMatch(c -> c.getColor().equals(cartaMesa.getColor())
+                        || c.getValor() == cartaMesa.getValor()
+                        || c.getColor().equals("NEGRO"));
     }
 }
