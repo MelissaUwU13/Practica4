@@ -15,7 +15,7 @@ public class UnoGame{
 
     public UnoGame(){
         Baraja mazo = new Baraja();
-        baraja.addAll(mazo.getCartas()); // Copiar todas las cartas a baraja
+        baraja = mazo.generarBaraja(); // Copiar todas las cartas a baraja
 
         // Repartir 7 cartas a cada jugador, eliminándolas de la baraja
         for (int i = 0; i < 7; i++) {
@@ -183,12 +183,12 @@ public class UnoGame{
     //Cambiar de color a carta
     public void cambioColor(){
         System.out.println("Elige un color (ROSA, AZUL, VERDE, AMARILLO): ");
-        System.out.print("FAVOR DE ESCRIBIRLO EN MAYUSCULAS");
+        System.out.println("FAVOR DE ESCRIBIRLO EN MAYUSCULAS");
         System.out.print("Ingrese el color: ");
         String color = scanner.nextLine().toUpperCase();
 
         //Si el usuario no elije una opcion correcta tendra que volver a intentarlo hasta que le salga bien
-        while (!color.equals("ROSA") && !color.equals("AZUL") && !color.equals("VERDE") && !color.equals("AMARILLO")){
+        while (!color.equals("AZUL") && !color.equals("ROSA") && !color.equals("VERDE") && !color.equals("AMARILLO")){
             System.out.println("Color inválido. Elige entre ROSA, AZUL, VERDE o AMARILLO: ");
             color = scanner.nextLine().toUpperCase();
         }
