@@ -15,10 +15,6 @@ public class UnoGame {
 
     }
 
-    public void iniciar() {
-
-    }
-
     public void jugar(){
 
     }
