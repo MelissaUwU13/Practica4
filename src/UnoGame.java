@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class UnoGame{
 
     private Consola impreso = new Consola();
+    private CartasJugador impreso2 = new CartasJugador();
     private List<CartaDiseño> baraja = new ArrayList<>();
     private List<CartaDiseño> cartasUsadas = new ArrayList<>();
     private List<CartaDiseño> jugador1 = new ArrayList<>();
@@ -88,7 +89,8 @@ public class UnoGame{
                 manoActual.remove(opcion); //Eliminar la carta de la mano después de jugarla
                 System.out.println("Jugaste la carta " + cartaSeleccionada);
                 impreso.Imprimir(cartaSeleccionada.getValor(), cartaSeleccionada.getColor(), cartaSeleccionada.getTipo());
-                cartasEspeciales(manoActual); // Verificamos si la carta jugada es especial
+                cartasEspeciales(manoActual);// Verificamos si la carta jugada es especial
+                //impreso2.CartasConsolaJugador(manoActual);
             }
 
             //Si el jugador ya no tiene cartas, entonces gana
