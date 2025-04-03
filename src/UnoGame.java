@@ -127,6 +127,7 @@ public class UnoGame{
         }
     }
 
+    //USAR PARA LAMBDAS
     //Función que comprueba cuáles cartas en la mano son válidas para jugar
     public List<CartaDiseño> comprobarCartasValidas(List<CartaDiseño> mano) {
         CartaDiseño cartaMesa = cartasUsadas.get(cartasUsadas.size() - 1);

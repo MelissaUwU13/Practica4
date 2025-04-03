@@ -5,7 +5,7 @@ import java.util.List;
 public class Baraja {
     private List<CartaDiseño> cartas;
     private String[] colores = {"ROSA", "AZUL", "VERDE", "AMARILLO"}; //Color baraja
-    private String[] tiposEspeciales = {"MAS2", "SALTO", "REVERSO"}; //Tipos de cartas
+    private String[] tiposEspeciales = {"MAS2","SALTO", "REVERSO"}; //Tipos de cartas
 
 
     public List<CartaDiseño> generarBaraja() {
@@ -37,8 +37,8 @@ public class Baraja {
 
         //For para las dos cartas especiales black
         for (int i=0;i<4;i++){
-            cartas.add(new CartaDiseño("NEGRO", "MAS4", -1));
-            cartas.add(new CartaDiseño("NEGRO", "CAMBIO_COLOR", -1));
+            cartas.add(new CartaDiseño("NEGRO", "MAS4", -3));
+            cartas.add(new CartaDiseño("NEGRO", "CAMBIO_COLOR", -3));
         }
 
         Collections.shuffle(cartas);
