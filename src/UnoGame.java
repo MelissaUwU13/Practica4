@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class UnoGame{
 
@@ -34,11 +35,11 @@ public class UnoGame{
         System.out.println("Carta en mesa: " + cartasUsadas.get(cartasUsadas.size() - 1));
     }
 
-    public void mostrarMano(List<CartaDiseño> mano){
+    //LAMBDA
+    public void mostrarMano(List<CartaDiseño> mano) {
         System.out.println("Cartas en tu mano:");
-        for(int i=0;i<mano.size(); i++){
-            System.out.println(i + ": " + mano.get(i));
-        }
+        IntStream.range(0, mano.size())
+                .forEach(i -> System.out.println(i + ": " + mano.get(i)));
     }
 
     public void jugar(){
@@ -133,11 +134,11 @@ public class UnoGame{
         CartaDiseño cartaMesa = cartasUsadas.get(cartasUsadas.size() - 1);
         List<CartaDiseño> cartasValidas = new ArrayList<>();
 
-        for(CartaDiseño carta : mano){
-            if(carta.getColor().equals(cartaMesa.getColor()) || carta.getValor() == cartaMesa.getValor() || carta.getColor().equals("NEGRO")){
-                cartasValidas.add(carta);
-            }
-        }
+        cartasValidas.addAll(mano.stream()
+                .filter(carta -> carta.getColor().equals(cartaMesa.getColor()) ||
+                        carta.getValor() == cartaMesa.getValor() ||
+                        carta.getColor().equals("NEGRO"))
+                .toList());
 
         return cartasValidas;
     }
